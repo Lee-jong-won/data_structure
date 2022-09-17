@@ -30,7 +30,7 @@ void tree_expansion(tree* tree_Pointer, int* object)
     }
 
     int object_size = tree_Pointer->max_Size;
-    new_tree(tree_Pointer, tree_Pointer->max_Size * 2);
+    new_tree(tree_Pointer, tree_Pointer->max_Size * 5);
 
     for(int i = 0; i < object_size; i++)
     {
@@ -117,7 +117,7 @@ int find(tree* tree_Pointer, int item)
     
 }
 
-void delete(tree* tree_Pointer, int item)
+void tree_delete(tree* tree_Pointer, int item)
 {
     int index = find(tree_Pointer, item);
 
@@ -164,7 +164,16 @@ void delete(tree* tree_Pointer, int item)
             }
 
             tree_Pointer->data[index] = tree_Pointer->data[delete_index];
-            tree_Pointer->data[delete_index] = -1;
+
+            if(tree_Pointer->data[2 * delete_index + 1] != -1)
+            {
+                tree_redefine(tree_Pointer, 2 * delete_index + 1, delete_index);
+            }
+            else
+            {
+                tree_Pointer->data[delete_index] = -1;
+            }
+                                    
         }
         
     }
@@ -250,11 +259,11 @@ void tree_redefine(tree* tree_Pointer, int from, int to)
     tree_Pointer->data[to] = tree_Pointer->data[from];
     tree_Pointer->data[from] = -1;
 
-    if(tree_Pointer->data[2 * temp] != -1)
+    if(tree_Pointer->data[2 * from] != -1)
     {
         tree_redefine(tree_Pointer, 2 * from, 2 * to);
     }
-    if(tree_Pointer->data[2 * temp + 1] != -1)
+    if(tree_Pointer->data[2 * from + 1] != -1)
     {
         tree_redefine(tree_Pointer, 2 * from + 1, 2 * to + 1);
     }
