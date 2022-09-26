@@ -86,3 +86,42 @@ void CBST::preorder()
 
 
 }
+
+void CBST::inorder()
+{
+    tBSTNode* cursor = root;
+    stack<tBSTNode*> my_stack;
+
+    while(cursor)
+    {
+        my_stack.push(cursor);
+        cursor = cursor->arrNode[(int)NODE_TYPE::LCHILD];
+    }
+
+    while(true)
+    {
+        if(!my_stack.empty())
+        {
+            cursor = my_stack.top();
+            my_stack.pop();
+            cout << cursor->data << " ";
+
+            if(cursor->arrNode[(int)NODE_TYPE::RCHILD])
+            {
+                cursor = cursor->arrNode[(int)NODE_TYPE::RCHILD];
+
+                while(cursor)
+                {
+                    my_stack.push(cursor);
+                    cursor = cursor->arrNode[(int)NODE_TYPE::LCHILD];
+                }
+            }
+            
+        }
+        else
+        {
+            break;
+        }
+        
+    }
+}
