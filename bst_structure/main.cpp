@@ -12,7 +12,7 @@ int main()
     my_bst.insert(85);
     my_bst.insert(100);
 
-    my_bst.inorder();
+    my_bst.postorder();
 
 
     return 0; 

@@ -125,3 +125,70 @@ void CBST::inorder()
         
     }
 }
+
+void CBST::postorder()
+{
+    tBSTNode* cursor = root;
+    tBSTNode* prev_cursor = nullptr;
+    stack<tBSTNode*> my_stack;
+    
+    while(cursor)
+    {
+        my_stack.push(cursor);
+        cursor = cursor->arrNode[(int)NODE_TYPE::LCHILD];
+    }
+    cursor = my_stack.top();
+
+    while (true)
+    {
+        if (!my_stack.empty())
+        {
+            // 오른쪽 자식이 없는 경우
+            if (!cursor->arrNode[(int)NODE_TYPE::RCHILD])
+            {
+                cout << cursor->data << " ";
+                my_stack.pop();
+                prev_cursor = cursor;
+
+                if (!my_stack.empty())
+                {
+                    cursor = my_stack.top();
+                }
+            }
+            // 오른쪽 자식이 있는 경우
+            else
+            {
+                if(prev_cursor != cursor->arrNode[(int)NODE_TYPE::RCHILD])
+                {
+                    cursor = cursor->arrNode[(int)NODE_TYPE::RCHILD];
+
+                    while (cursor)
+                    {
+                        my_stack.push(cursor);
+                        cursor = cursor->arrNode[(int)NODE_TYPE::LCHILD];
+                    }
+                    
+                    cursor = my_stack.top();
+                }
+                else
+                {
+                    cout << cursor->data << " ";
+                    my_stack.pop();
+                    prev_cursor = cursor;
+
+                    if(!my_stack.empty())
+                    {
+                        cursor = my_stack.top();
+                    }
+                }
+                
+            }
+            
+        }
+        else
+        {
+            break;
+        }
+        
+    }
+}
