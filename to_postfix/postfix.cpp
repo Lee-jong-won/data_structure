@@ -82,7 +82,7 @@ void postfix(const char *infix, char *postfix)
 
           (1).스택 내부 top 데이터의 우선순위가 높을 경우, top 데이터를 스택에서 제거
           (2).top이였던 데이터를 output 배열에 추가
-          ->위 과정을 해당 연산자의 우선순위가 커질때 까지 반복한다.
+          ->위 과정을 cursor가 가리키는 연산자의 우선순위가 커질때 까지 반복한다.
           (3)cursor가 가리키는 operator를 output 배열에 추가.
           
           //
