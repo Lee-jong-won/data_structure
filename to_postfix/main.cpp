@@ -3,7 +3,7 @@
 
 int main()
 {
-    char input[] = "(a+b*c)/d+e+f";
+    char input[] = "m*n+(p-q)+r";
     char output[100];
 
     postfix(input, output);

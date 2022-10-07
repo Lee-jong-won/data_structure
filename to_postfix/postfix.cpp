@@ -132,7 +132,7 @@ void postfix(const char *infix, char *postfix)
             {
                 while(isp[(int)oper_stack.top()] >= icp[(int)token])
                 {
-                    postfix[index] = infix[n-1];
+                    postfix[index] = change_format(oper_stack.top());
                     oper_stack.pop();
                     index++;
                 }
