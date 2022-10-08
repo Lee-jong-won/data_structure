@@ -17,7 +17,7 @@ typedef struct tNode
     struct tNode* left_child;
     struct tNode* right_child;
 
-    tNode(precedence _data, tNode* left_ptr, tNode* right_ptr)
+    tNode(char _data, tNode* left_ptr, tNode* right_ptr)
     : data(_data),
       left_child(left_ptr),
       right_child(right_ptr)
@@ -47,3 +47,5 @@ class expression_Tree{
        void make_tree(const char *infix);
        void print();
 };
+
+void inorder_print(tNode* root);

@@ -3,6 +3,7 @@
 int main()
 {
     expression_Tree tree;
-    tree.to_postfix("3*(4+7)/12");
+    
+    tree.make_tree("(A+B)*C-(D-E)*(F+G)");
     tree.print();
 }

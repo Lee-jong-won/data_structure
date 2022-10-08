@@ -1,9 +1,10 @@
 #include "expression_tree.h"
 #include <stack>
-#include <stdio.h>
 #include <string.h>
+#include <iostream>
 
 using std::stack;
+using std::cout;
 
 expression_Tree::expression_Tree()
 {
@@ -19,6 +20,7 @@ expression_Tree::expression_Tree()
         icp[i] = input2[i];
     }
 }
+
 
 expression_Tree::~expression_Tree()
 {
@@ -147,9 +149,9 @@ void expression_Tree::make_tree(const char* infix)
     int n = 0;
     stack<tNode*> tree_stack;
 
-    cursor = getToken(postfix, n);
+    cursor = getToken(postfix, &n);
 
-    while( cursor != '\0' )
+    while( cursor != precedence::eos )
     {
         tNode* new_node = new tNode(postfix[n-1], nullptr, nullptr);
         if(cursor == precedence::operand)
@@ -165,12 +167,25 @@ void expression_Tree::make_tree(const char* infix)
             tree_stack.push(new_node);
         }
 
-        cursor = getToken(postfix, n);
+        cursor = getToken(postfix, &n);
     }
 
+    root = tree_stack.top();
+    tree_stack.pop();
+}
 
 
+void inorder_print(tNode* root)
+{
+    if(root)
+    {
+        inorder_print(root->left_child);
+        cout << root->data << " ";
+        inorder_print(root->right_child);
+    }
+}
 
-
-
+void expression_Tree::print()
+{
+    inorder_print(root);
 }
