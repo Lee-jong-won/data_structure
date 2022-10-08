@@ -13,9 +13,17 @@ enum class precedence
 
 typedef struct tNode
 {
-    precedence _data;
+    char data;
     struct tNode* left_child;
     struct tNode* right_child;
+
+    tNode(precedence _data, tNode* left_ptr, tNode* right_ptr)
+    : data(_data),
+      left_child(left_ptr),
+      right_child(right_ptr)
+    {
+
+    }
 }tNode;
 
 class expression_Tree{
@@ -26,7 +34,7 @@ class expression_Tree{
        int* icp;
        char* postfix;
 
-    public:
+    private:
        char change_format(precedence object);
        precedence getToken(const char *infix, int *n);
        void to_postfix(const char *infix);

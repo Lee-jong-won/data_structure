@@ -140,7 +140,37 @@ void expression_Tree::to_postfix(const char *infix)
 
 } 
 
-void expression_Tree::print()
+void expression_Tree::make_tree(const char* infix)
 {
-    printf("%s", postfix);
+    precedence cursor;
+    to_postfix(infix);
+    int n = 0;
+    stack<tNode*> tree_stack;
+
+    cursor = getToken(postfix, n);
+
+    while( cursor != '\0' )
+    {
+        tNode* new_node = new tNode(postfix[n-1], nullptr, nullptr);
+        if(cursor == precedence::operand)
+        {
+            tree_stack.push(new_node);
+        }
+        else
+        {
+            new_node->right_child = tree_stack.top();
+            tree_stack.pop();
+            new_node->left_child = tree_stack.top();
+            tree_stack.pop();
+            tree_stack.push(new_node);
+        }
+
+        cursor = getToken(postfix, n);
+    }
+
+
+
+
+
+
 }
