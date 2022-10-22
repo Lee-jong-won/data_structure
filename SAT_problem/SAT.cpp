@@ -1,4 +1,4 @@
-#include "sat.h"
+#include "SAT.h"
 #include <stack>
 #include <iostream>
 #include <string.h>
