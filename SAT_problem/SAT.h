@@ -1,3 +1,7 @@
+#include <list>
+
+using std::list;
+
 enum class precedence 
 {
     LPAREN,
@@ -21,7 +25,7 @@ typedef struct node {
     struct node* leftchild;
     struct node* rightchild;
     logical data;
-    short value;
+    bool value;
 
     node(struct node *lchild, struct node *rchild, logical _data, short _value)
         : leftchild(lchild), rightchild(rchild), data(_data), value(_value) {}
@@ -31,6 +35,7 @@ class SAT_problem
 {
     public:
        tNode* root;
+       list<tNode*> leaf;
        int* isp;
        int* icp;
        wchar_t* postfix;
@@ -45,7 +50,7 @@ class SAT_problem
        ~SAT_problem();
     
     public:
-       void make_tree(const char *);
+       void make_tree(const wchar_t *);
        void print();
 
 };

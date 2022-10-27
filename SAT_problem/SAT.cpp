@@ -123,3 +123,41 @@ void SAT_problem::to_postfix(const wchar_t* infix)
     postfix[index] = L'\0';
 
 }
+
+void SAT_problem::make_tree(const wchar_t* postfix)
+{
+    int n = 0;
+    stack<tNode*> tree_Node;
+
+    for( precedence cursor = getToken(postfix, &n); cursor != precedence::EOS; cursor = getToken(postfix, &n) )
+    {
+        tNode* new_node = new tNode(nullptr, nullptr, logical::TRUE, true);
+
+        if(cursor == precedence::AND || cursor == precedence::OR)
+        {
+            if(cursor == precedence::AND)
+            {
+                new_node->data = logical::AND
+            }
+            else 
+            {
+                new_node->data = logical::OR;
+            }
+            new_node->rightchild = tree_Node.top();
+            tree_Node.pop();
+            new_node->leftchild = tree_Node.top();
+            tree_Node.pop();
+        }
+        else
+        {
+            new_node->rightchild = tree_Node.top();
+            tree_Node.pop();
+        }
+
+        tree_Node.push(new_node);
+    }
+
+
+
+
+}
