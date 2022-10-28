@@ -1,15 +1,16 @@
 #include "SAT.h"
-
+#include <cwchar>
 #include <iostream>
+#include <string.h>
 
 using std::wcout;
+using std::endl;
 
 int main()
 {
     SAT_problem my_sat;
-    my_sat.to_postfix(L"(a∧b)∨(c∧d)");
 
-    wcout << my_sat.postfix[2];
+    
 
     return 0;
 }

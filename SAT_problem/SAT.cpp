@@ -4,6 +4,7 @@
 #include <string.h>
 
 using std::stack;
+using std::wcout;
 
 SAT_problem::SAT_problem()
 {
@@ -19,6 +20,8 @@ SAT_problem::SAT_problem()
         isp[i] = _isp[i];
         icp[i] = _icp[i];
     }
+
+    leaf.assign(10,nullptr);
 }
 
 SAT_problem::~SAT_problem()
@@ -32,15 +35,14 @@ precedence SAT_problem::getToken(const wchar_t *infix, int *n)
     {
     case L'(':
         return precedence::LPAREN;
-
     case L')':
         return precedence::RPAREN;
-
     case L'∧':
         return precedence::AND;
-
     case L'∨':
         return precedence::OR;
+    case L'￢':
+        return precedence::NOT;
     case L'\0' :
         return precedence::EOS;
     default:
@@ -56,6 +58,8 @@ wchar_t SAT_problem::change_format(precedence object)
            return L'∧';
         case precedence::OR:
            return L'∨';
+        case precedence::NOT:
+           return L'￢';
         case precedence::LPAREN:
            return L'(';
         case precedence::RPAREN:
@@ -80,7 +84,7 @@ void SAT_problem::to_postfix(const wchar_t* infix)
 
     for (token = getToken(infix, &n); token != precedence::EOS; token = getToken(infix, &n))
     {
-        if(token == precedence::OPERAND)
+        if(token == precedence::OPERAND || token == precedence::NOT)
         {
             postfix[index] = infix[n-1];
             index++;
@@ -121,13 +125,14 @@ void SAT_problem::to_postfix(const wchar_t* infix)
         token = oper_stack.top();
     }
     postfix[index] = L'\0';
-
 }
 
-void SAT_problem::make_tree(const wchar_t* postfix)
+void SAT_problem::make_tree(const wchar_t* _postfix)
 {
     int n = 0;
     stack<tNode*> tree_Node;
+
+    to_postfix(_postfix);
 
     for( precedence cursor = getToken(postfix, &n); cursor != precedence::EOS; cursor = getToken(postfix, &n) )
     {
@@ -137,27 +142,57 @@ void SAT_problem::make_tree(const wchar_t* postfix)
         {
             if(cursor == precedence::AND)
             {
-                new_node->data = logical::AND
+                new_node->data = logical::AND;
             }
             else 
             {
                 new_node->data = logical::OR;
             }
+
             new_node->rightchild = tree_Node.top();
             tree_Node.pop();
             new_node->leftchild = tree_Node.top();
             tree_Node.pop();
-        }
+        } 
+        else if (cursor == precedence::NOT) 
+        {
+          new_node->rightchild = tree_Node.top();
+          tree_Node.pop();
+        }  
         else
         {
-            new_node->rightchild = tree_Node.top();
-            tree_Node.pop();
+            leaf.push_back(new_node);
         }
-
+    
         tree_Node.push(new_node);
     }
 
+    root = tree_Node.top();
+}
 
+void inorder_print(tNode* root)
+{
+    if(root)
+    {
+        inorder_print(root->leftchild);
+        switch (root->data) {
+        case logical::AND:
+          wcout << L'∧';
+          break;
+        case logical::OR:
+          wcout << L'∨';
+          break;
+        case logical::NOT:
+          wcout << L'￢';
+          break;
+        default :
+          wcout << L'p';          
+        }        
+        inorder_print(root->rightchild);
+    }
+}
 
-
+void SAT_problem::print()
+{
+    inorder_print(root);
 }

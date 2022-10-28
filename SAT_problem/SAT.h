@@ -1,6 +1,6 @@
-#include <list>
+#include <vector>
 
-using std::list;
+using std::vector;
 
 enum class precedence 
 {
@@ -8,6 +8,7 @@ enum class precedence
     RPAREN,
     AND,
     OR,
+    NOT,
     EOS,
     OPERAND
 };
@@ -27,7 +28,7 @@ typedef struct node {
     logical data;
     bool value;
 
-    node(struct node *lchild, struct node *rchild, logical _data, short _value)
+    node(struct node *lchild, struct node *rchild, logical _data, bool _value)
         : leftchild(lchild), rightchild(rchild), data(_data), value(_value) {}
 } tNode;
 
@@ -35,7 +36,7 @@ class SAT_problem
 {
     public:
        tNode* root;
-       list<tNode*> leaf;
+       vector<tNode*> leaf;
        int* isp;
        int* icp;
        wchar_t* postfix;
