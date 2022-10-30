@@ -10,7 +10,8 @@ int main()
 {
     SAT_problem my_sat;
 
-    
+    my_sat.make_tree(L"(a∧b)∨(c∨d)");    
+    my_sat.print();
 
     return 0;
 }
