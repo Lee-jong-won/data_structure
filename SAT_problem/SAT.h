@@ -34,14 +34,15 @@ typedef struct node {
 
 class SAT_problem
 {
-    private:
+    public:
        int* isp;
        int* icp;
        wchar_t* postfix;
     
     public:
-       vector<tNode*> leaf;
+       tNode** leaf;
        tNode* root;
+       int size;
 
     private:
        wchar_t change_format(precedence);

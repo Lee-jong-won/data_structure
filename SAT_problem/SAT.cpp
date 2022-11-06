@@ -21,7 +21,6 @@ SAT_problem::SAT_problem()
         icp[i] = _icp[i];
     }
 
-    leaf.assign(10,nullptr);
 }
 
 SAT_problem::~SAT_problem()
@@ -86,6 +85,11 @@ void SAT_problem::to_postfix(const wchar_t* infix)
     {
         if(token == precedence::OPERAND || token == precedence::NOT)
         {
+            if(token == precedence::OPERAND)
+            {
+                size++;
+            }
+
             postfix[index] = infix[n-1];
             index++;
         }
@@ -115,6 +119,8 @@ void SAT_problem::to_postfix(const wchar_t* infix)
         
     }
 
+    leaf = (tNode**)malloc(size * sizeof(tNode*));
+
     token = oper_stack.top();
     precedence temp;
     while(token != precedence::EOS)
@@ -130,6 +136,7 @@ void SAT_problem::to_postfix(const wchar_t* infix)
 void SAT_problem::make_tree(const wchar_t* _postfix)
 {
     int n = 0;
+    int leaf_num = 0;
     stack<tNode*> tree_Node;
 
     to_postfix(_postfix);
@@ -157,11 +164,13 @@ void SAT_problem::make_tree(const wchar_t* _postfix)
         else if (cursor == precedence::NOT) 
         {
           new_node->rightchild = tree_Node.top();
+          new_node->data = logical::NOT;
           tree_Node.pop();
         }  
         else
         {
-            leaf.push_back(new_node);
+            leaf[leaf_num] = new_node;
+            leaf_num++;
         }
     
         tree_Node.push(new_node);
@@ -176,21 +185,21 @@ void SAT_problem::postOrderEval(tNode* treePointer)
     {
         postOrderEval(treePointer->leftchild);
         postOrderEval(treePointer->rightchild);
-        swtich(treePointer->data)
+        switch(treePointer->data)
         {
             case logical::NOT:
             {
-                treePointer->value = !treePointer->rightchild->value;
+                treePointer->value = !(treePointer->rightchild->value);
                 break;
             }
             case logical::AND:
             {
-                treePointer->value = node->rightchild->value && node->leftchild->value;
+                treePointer->value = treePointer->rightchild->value && treePointer->leftchild->value;
                 break;
             }
             case logical::OR:
             {
-                treePointer->value = node->rightchild->value || node->leftchild->value;
+                treePointer->value = treePointer->rightchild->value || treePointer->leftchild->value;
                 break;
             }
             case logical::TRUE:

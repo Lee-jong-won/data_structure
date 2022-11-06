@@ -15,28 +15,30 @@ int main()
     int main_num;
     bool flag; 
 
-    my_sat.make_tree(L"(a∧b)∨(c∨d)");    
+    my_sat.make_tree(L"(a∧b)∨(￢c∧d)");    
     
-    lg_arry = (int*)malloc(sizeof(int) * my_sat.leaf.size());
-    for(int i = 0; i < my_sat.leaf.size(); i++)
+    
+    lg_arry = (int*)malloc(sizeof(int) * my_sat.size);
+    for(int i = 0; i < my_sat.size; i++)
     {
         lg_arry[i] = 0;
     }
+
     
-    for(main_num = 0; i < (int)pow(2, my_sat.leaf.size()); main_num++)
+    for(main_num = 0; main_num < (int)pow(2, my_sat.size); main_num++)
     {
-        int idx = my_sat.leaf.size()-1;
-        for(int k = main_num; k != 0; k=/2)
+        int idx = my_sat.size-1;
+        for(int k = main_num; k != 0; k/=2)
         {
             lg_arry[idx] = k%2;
             idx--;
         }
 
-        for(int i = 0; i < my_sat.leaf.size(); i++)
+        for(int i = 0; i < my_sat.size; i++)
         {
             if(lg_arry[i] == 1)
             {
-                my_sat.leaf[i]->data = logical::true;
+                my_sat.leaf[i]->data = logical::TRUE;
                 my_sat.leaf[i]->value = true;
             }
             else
@@ -53,15 +55,15 @@ int main()
             flag = true;
             cout << "combination is as followed" << endl;
 
-            for(int i = 0; i < my_sat.leaf.size(); i++)
+            for(int i = 0; i < my_sat.size; i++)
             {
                 if(my_sat.leaf[i]->value == true)
                 {
-                    printf("p[i]:true\n", i);
+                    printf("p[%d]:true\n", i);
                 }
                 else
                 {
-                    printf("p[i]:false\n", i);
+                    printf("p[%d]:false\n", i);
                 }
             }
 
@@ -74,6 +76,7 @@ int main()
     {
         cout << "No satisfiable combination\n";
     }
+    
 
     return 0;
 }
