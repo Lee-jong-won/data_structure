@@ -35,11 +35,13 @@ typedef struct node {
 class SAT_problem
 {
     private:
-       tNode* root;
-       vector<tNode*> leaf;
        int* isp;
        int* icp;
        wchar_t* postfix;
+    
+    public:
+       vector<tNode*> leaf;
+       tNode* root;
 
     private:
        wchar_t change_format(precedence);
@@ -52,6 +54,7 @@ class SAT_problem
     
     public:
        void make_tree(const wchar_t *);
+       void postOrderEval(tNode*);
        void print();
 
 };

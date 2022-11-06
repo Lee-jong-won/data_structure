@@ -170,6 +170,43 @@ void SAT_problem::make_tree(const wchar_t* _postfix)
     root = tree_Node.top();
 }
 
+void SAT_problem::postOrderEval(tNode* treePointer)
+{
+    if(treePointer)
+    {
+        postOrderEval(treePointer->leftchild);
+        postOrderEval(treePointer->rightchild);
+        swtich(treePointer->data)
+        {
+            case logical::NOT:
+            {
+                treePointer->value = !treePointer->rightchild->value;
+                break;
+            }
+            case logical::AND:
+            {
+                treePointer->value = node->rightchild->value && node->leftchild->value;
+                break;
+            }
+            case logical::OR:
+            {
+                treePointer->value = node->rightchild->value || node->leftchild->value;
+                break;
+            }
+            case logical::TRUE:
+            {
+                treePointer->value = true;
+                break;
+            }
+            case logical::FALSE:
+            {
+                treePointer->value = false;
+                break;
+            }
+        }
+    }
+}
+
 void inorder_print(tNode* root)
 {
     if(root)
