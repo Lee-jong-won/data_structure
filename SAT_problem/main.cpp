@@ -15,7 +15,7 @@ int main()
     int main_num;
     bool flag; 
 
-    my_sat.make_tree(L"(a∧b)∨(￢c∧d)");    
+    my_sat.make_tree(L"(a∧￢b)∨c∨￢d");    
     
     
     lg_arry = (int*)malloc(sizeof(int) * my_sat.size);
@@ -67,6 +67,8 @@ int main()
                 }
             }
 
+            cout << endl << endl;
+            my_sat.print();
             cout << endl << endl;
         }
 

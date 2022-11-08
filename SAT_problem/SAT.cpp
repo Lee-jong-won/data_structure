@@ -5,6 +5,7 @@
 
 using std::stack;
 using std::wcout;
+using std::cout;
 
 SAT_problem::SAT_problem()
 {
@@ -163,14 +164,26 @@ void SAT_problem::make_tree(const wchar_t* _postfix)
         } 
         else if (cursor == precedence::NOT) 
         {
-          new_node->rightchild = tree_Node.top();
+          if(tree_Node.empty())
+          {
+              tree_Node.push(new_node);
+          }
+
           new_node->data = logical::NOT;
-          tree_Node.pop();
         }  
         else
-        {
+        { 
             leaf[leaf_num] = new_node;
             leaf_num++;
+
+            if(!tree_Node.empty())
+            {
+                if (tree_Node.top()->data == logical::NOT)
+                {
+                    tree_Node.top()->rightchild = new_node;
+                    continue;
+                }
+            }
         }
     
         tree_Node.push(new_node);
@@ -221,19 +234,14 @@ void inorder_print(tNode* root)
     if(root)
     {
         inorder_print(root->leftchild);
-        switch (root->data) {
-        case logical::AND:
-          wcout << L'∧';
-          break;
-        case logical::OR:
-          wcout << L'∨';
-          break;
-        case logical::NOT:
-          wcout << L'￢';
-          break;
-        default :
-          wcout << L'p';          
-        }        
+        if(root->value)
+        {
+            cout << "true" << " ";
+        }
+        else
+        {
+            cout << "false" << " ";
+        }
         inorder_print(root->rightchild);
     }
 }
