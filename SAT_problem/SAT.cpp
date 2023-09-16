@@ -30,6 +30,10 @@ SAT_problem::~SAT_problem()
 
 precedence SAT_problem::getToken(const wchar_t *infix, int *n)
 {
+    /*infix의 n번째 요소를 precedence 자료형의 한 값으로 바꿔준다*/
+
+    
+
     wchar_t symbol = infix[(*n)++];
     switch (symbol)
     {
@@ -52,6 +56,8 @@ precedence SAT_problem::getToken(const wchar_t *infix, int *n)
 
 wchar_t SAT_problem::change_format(precedence object)
 {
+
+    
     switch(object)
     {
         case precedence::AND:
@@ -74,6 +80,43 @@ wchar_t SAT_problem::change_format(precedence object)
 
 void SAT_problem::to_postfix(const wchar_t* infix)
 {
+    /*
+    infix->postfix로 변환할때 고려사항
+
+    1.cursor가 input을 순회하며, cursor가 operand를 가리키면 그 operand는 그대로 output 배열에 넣는다.
+    2.cursor가 operator를 가리키면, operator는 우선순위가 높은 것이 먼저 output 배열에 들어간다.
+    이때, 연산자들간의 우선순위가 비교되야하는데, 비교 방법으로 스택 자료구조를 이용한다.
+
+    스택 자료구조에 데이터가 비어있을 경우->해당 operator output 배열에 넣기
+    스택 자료구조에 데이터가 있을 경우->스택 내부 top 데이터의 우선순위와 cursor가 가리키는 연산자의 우선순위를 비교한다.
+
+          (1).스택 내부 top 데이터의 우선순위가 높을 경우, top 데이터를 스택에서 제거
+          (2).top이였던 데이터를 output 배열에 추가
+          ->위 과정을 cursor가 가리키는 연산자의 우선순위가 커질때 까지 반복한다.
+          (3)cursor가 가리키는 operator를 output 배열에 추가.
+
+          //
+          주의사항! (괄호가 처리되는 방식)
+
+          괄호 안에 있는 연산자들은 괄호밖에 있는 연산자들에 비해 연산 우선순위가 높아야한다.
+          따라서, '('의 괄호 안 우선순위는 연산자들중 가장 낮게, 괄호 밖 우선순위는 연산자들 중 가장 높게
+          설정한다.
+
+          이렇게 되면, 다음을 얻을 수 있다.
+          1.cursor가 '('를 가리킬 때, 스택의 가장 위에 어떤 데이터가 있던지 상관없이 '('가
+          스택에 삽입된다.
+          2.'(' 가 스택에 삽입이 된 이후, '('이 스택의 가장 위가 되어, cursor가 가리키는 operator와 비교될 때,
+          '('은 출력이 되지 않다가, 순회가 계속 진행되어 output에 데이터 계속 추가된다.
+          3. cursor가 ')'를 만나면 '(' 이후 스택에 가지고 있던 operator를 차례로 output에 집어넣는다.
+          3.결과적으로 output에는 괄호 안의 연산이 괄호 밖의 연산보다 우선시 된 식이 만들어진다.
+          //
+
+    */
+    
+    
+    
+    
+    
     int n = 0;
     int index = 0;
     precedence token;
@@ -136,6 +179,23 @@ void SAT_problem::to_postfix(const wchar_t* infix)
 
 void SAT_problem::make_tree(const wchar_t* _postfix)
 {
+    /*
+   
+    
+    cursor가 prefix로 표현된 문자열 데이터를 하나씩 읽으면서 다음의 연산을 수행한다
+
+    a)cursor가 가리키는 문자를 저장하는 노드를 새로 만든다.
+    
+    b-1)cursor가 가리키는 문자가 연산자일 경우 -> 스택의 가장 위에서 데이터를 두개 뽑아서 각각 연산자 노드의 자식으로 삼는다.
+    b-2)cursor가 가리키는 문자가 Not일 경우 -> 스택에 해당 노드의 주소를 집어넣는다.
+    b-3)cursor가 가리키는 문자가 피연산자일 경우 -> 스택에 해당 노드의 주소를 집어넣되, 
+    b-4)만약 스택의 가장 위쪽에 not이 저장된 노드가 있는 경우, not의 오른쪽 자식 노드로 해당 노드를 not 노드와 연결한다.    
+    
+    c)a에서 만든 노드의 주소를 스택에 집어넣는다.
+    */
+    
+
+
     int n = 0;
     int leaf_num = 0;
     stack<tNode*> tree_Node;
@@ -194,6 +254,12 @@ void SAT_problem::make_tree(const wchar_t* _postfix)
 
 void SAT_problem::postOrderEval(tNode* treePointer)
 {
+    /*postOrdertravesal로 트리를 순회하면서, 조건에 따라 각 노드의 진리값 변수를 갱신한다*/
+
+
+
+
+
     if(treePointer)
     {
         postOrderEval(treePointer->leftchild);
