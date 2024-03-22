@@ -122,7 +122,7 @@ Node* DLL_GetNodeAt(Node* Head, int Location)
 {
 	Node* current = Head;
 
-	while (current->NextNode != nullptr && --Location >= 0)
+	while (current->NextNode != nullptr && --Location >= 0) // Location : head로부터 cursor가 몇 번 옮겨지면 찾고자 하는 위치로 cursor가 이동하는지를 나타냄
 	{
 		current = current->NextNode;
 	}
